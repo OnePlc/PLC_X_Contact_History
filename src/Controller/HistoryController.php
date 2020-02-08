@@ -50,4 +50,71 @@ class HistoryController extends CoreEntityController {
             }
         }
     }
+
+    public function attachHistoryForm($oItem = false) {
+        $oForm = CoreEntityController::$aCoreTables['core-form']->select(['form_key'=>'contacthistory-single']);
+        $aFields = [
+            'history-base' => CoreEntityController::$aCoreTables['core-form-field']->select(['form' => 'contacthistory-single']),
+        ];
+
+        # Try to get adress table
+        try {
+            $oHistoryTbl = CoreEntityController::$oServiceManager->get(HistoryTable::class);
+        } catch(\RuntimeException $e) {
+            //echo '<div class="alert alert-danger"><b>Error:</b> Could not load address table</div>';
+            return [];
+        }
+
+        if(!isset($oHistoryTbl)) {
+            return [];
+        }
+
+        $aHistories = [];
+        $oPrimaryHistory = false;
+        if($oItem) {
+            # load contact addresses
+            $oHistories = $oHistoryTbl->fetchAll(false, ['contact_idfs' => $oItem->getID()]);
+            # get primary address
+            if (count($oHistories) > 0) {
+                foreach ($oHistories as $oAddr) {
+                    $aHistories[] = $oAddr;
+                }
+            }
+        }
+
+        # Pass Data to View - which will pass it to our partial
+        return [
+            # must be named aPartialExtraData
+            'aPartialExtraData' => [
+                # must be name of your partial
+                'contact_history'=> [
+                    'oHistories'=>$aHistories,
+                    'oForm'=>$oForm,
+                    'aFormFields'=>$aFields,
+                ]
+            ]
+        ];
+    }
+
+    public function attachHistoryToContact($oItem,$aRawData) {
+        $oItem->contact_idfs = $aRawData['ref_idfs'];
+
+        return $oItem;
+    }
+
+    public function addAction() {
+        /**
+         * You can just use the default function and customize it via hooks
+         * or replace the entire function if you need more customization
+         *
+         * Hooks available:
+         *
+         * contact-add-before (before show add form)
+         * contact-add-before-save (before save)
+         * contact-add-after-save (after save)
+         */
+        $iContactID = $this->params()->fromRoute('id', 0);
+
+        return $this->generateAddView('contacthistory','contacthistory-single','contact','view',$iContactID,['iContactID'=>$iContactID]);
+    }
 }

@@ -11,6 +11,13 @@ INSERT INTO `core_form_field` (`Field_ID`, `type`, `label`, `fieldkey`, `tab`, `
 (NULL, 'partial', 'History', 'contact_history', 'contact-history', 'contact-single', 'col-md-12', '', '', '0', '1', '0', '', '', '');
 
 --
+-- add button
+--
+INSERT INTO `core_form_button` (`Button_ID`, `label`, `icon`, `title`, `href`, `class`, `append`, `form`, `mode`, `filter_check`, `filter_value`) VALUES
+(NULL, 'Add History', 'fas fa-history', 'Add History', '/contact/history/add/##ID##', 'primary', '', 'contact-view', 'link', '', ''),
+(NULL, 'Save History', 'fas fa-save', 'Save History', '#', 'primary saveForm', '', 'contacthistory-single', 'link', '', '');
+
+--
 -- create history table
 --
 CREATE TABLE `contact_history` (
@@ -36,8 +43,20 @@ INSERT INTO `core_form` (`form_key`, `label`, `entity_class`, `entity_tbl_class`
 ('contacthistory-single', 'Contact History', 'OnePlace\\Contact\\History\\Model\\History', 'OnePlace\\Contact\\History\\Model\\HistoryTable');
 
 --
+-- add form tab
+--
+INSERT INTO `core_form_tab` (`Tab_ID`, `form`, `title`, `subtitle`, `icon`, `counter`, `sort_id`, `filter_check`, `filter_value`) VALUES
+('history-base', 'contacthistory-single', 'History', 'Recent Contact', 'fas fa-history', '', '1', '', '');
+
+--
 -- add address fields
 --
 INSERT INTO `core_form_field` (`Field_ID`, `type`, `label`, `fieldkey`, `tab`, `form`, `class`, `url_view`, `url_list`, `show_widget_left`, `allow_clear`, `readonly`, `tbl_cached_name`, `tbl_class`, `tbl_permission`) VALUES
 (NULL, 'text', 'Comment', 'comment', 'history-base', 'contacthistory-single', 'col-md-6', '', '', '0', '1', '0', '', '', ''),
 (NULL, 'hidden', 'Contact', 'contact_idfs', 'history-base', 'contacthistory-single', 'col-md-3', '', '/', '0', '1', '0', '', '', '');
+
+--
+-- permission add history
+--
+INSERT INTO `permission` (`permission_key`, `module`, `label`, `nav_label`, `nav_href`, `show_in_menu`) VALUES
+('add', 'OnePlace\\Contact\\History\\Controller\\HistoryController', 'Add History', '', '', '0');

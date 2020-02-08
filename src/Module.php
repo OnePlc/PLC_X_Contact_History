@@ -53,6 +53,8 @@ class Module {
         $tableGateway = $container->get(HistoryTable::class);
 
         # Register Filter Plugin Hook
+        CoreEntityController::addHook('contact-view-before',(object)['sFunction'=>'attachHistoryForm','oItem'=>new HistoryController($oDbAdapter,$tableGateway,$container)]);
+        CoreEntityController::addHook('contacthistory-add-before-save',(object)['sFunction'=>'attachHistoryToContact','oItem'=>new HistoryController($oDbAdapter,$tableGateway,$container)]);
         //CoreEntityController::addHook('contact-add-after-save',(object)['sFunction'=>'attachHistoryToContact','oItem'=>new HistoryController($oDbAdapter,$tableGateway,$container)]);
         //CoreEntityController::addHook('contact-edit-after-save',(object)['sFunction'=>'attachHistoryToContact','oItem'=>new HistoryController($oDbAdapter,$tableGateway,$container)]);
     }
