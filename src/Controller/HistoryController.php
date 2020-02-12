@@ -53,9 +53,22 @@ class HistoryController extends CoreEntityController {
 
     public function attachHistoryForm($oItem = false) {
         $oForm = CoreEntityController::$aCoreTables['core-form']->select(['form_key'=>'contacthistory-single']);
-        $aFields = [
-            'history-base' => CoreEntityController::$aCoreTables['core-form-field']->select(['form' => 'contacthistory-single']),
-        ];
+
+        $aFields = [];
+        $aUserFields = CoreEntityController::$oSession->oUser->getMyFormFields();
+        if(array_key_exists('contacthistory-single',$aUserFields)) {
+            $aFieldsTmp = $aUserFields['contacthistory-single'];
+            if(count($aFieldsTmp) > 0) {
+                # add all contact-base fields
+                foreach($aFieldsTmp as $oField) {
+                    if($oField->tab == 'history-base') {
+                        $aFields[] = $oField;
+                    }
+                }
+            }
+        }
+
+        $aFieldsByTab = ['history-base'=>$aFields];
 
         # Try to get adress table
         try {
@@ -90,7 +103,7 @@ class HistoryController extends CoreEntityController {
                 'contact_history'=> [
                     'oHistories'=>$aHistories,
                     'oForm'=>$oForm,
-                    'aFormFields'=>$aFields,
+                    'aFormFields'=>$aFieldsByTab,
                 ]
             ]
         ];
