@@ -2,7 +2,7 @@
 /**
  * HistoryTable.php - History Table
  *
- * Table Model for Contact History
+ * Table Model for History History
  *
  * @category Model
  * @package Contact\History
@@ -40,7 +40,7 @@ class HistoryTable extends CoreEntityTable {
     }
 
     /**
-     * Get Contact Entity
+     * Get History Entity
      *
      * @param int $id
      * @return mixed
@@ -52,18 +52,18 @@ class HistoryTable extends CoreEntityTable {
     }
 
     /**
-     * Save Contact Entity
+     * Save History Entity
      *
-     * @param Contact $oContact
-     * @return int Contact ID
+     * @param History $oHistory
+     * @return int History ID
      * @since 1.0.0
      */
-    public function saveSingle(History $oContact) {
+    public function saveSingle(History $oHistory) {
         $aData = [];
 
-        $aData = $this->attachDynamicFields($aData,$oContact);
+        $aData = $this->attachDynamicFields($aData,$oHistory);
 
-        $id = (int) $oContact->id;
+        $id = (int) $oHistory->id;
 
         if ($id === 0) {
             # Add Metadata
@@ -72,14 +72,14 @@ class HistoryTable extends CoreEntityTable {
             $aData['modified_by'] = CoreController::$oSession->oUser->getID();
             $aData['modified_date'] = date('Y-m-d H:i:s',time());
 
-            # Insert Contact
+            # Insert History
             $this->oTableGateway->insert($aData);
 
             # Return ID
             return $this->oTableGateway->lastInsertValue;
         }
 
-        # Check if Contact Entity already exists
+        # Check if History Entity already exists
         try {
             $this->getSingle($id);
         } catch (\RuntimeException $e) {
@@ -93,7 +93,7 @@ class HistoryTable extends CoreEntityTable {
         $aData['modified_by'] = CoreController::$oSession->oUser->getID();
         $aData['modified_date'] = date('Y-m-d H:i:s',time());
 
-        # Update Contact
+        # Update History
         $this->oTableGateway->update($aData, ['History_ID' => $id]);
 
         return $id;
@@ -102,7 +102,7 @@ class HistoryTable extends CoreEntityTable {
     /**
      * Generate new single Entity
      *
-     * @return Contact
+     * @return History
      * @since 1.0.0
      */
     public function generateNew() {

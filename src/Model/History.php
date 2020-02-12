@@ -2,7 +2,7 @@
 /**
  * History.php - History Entity
  *
- * Entity Model for Contact History
+ * Entity Model for History History
  *
  * @category Model
  * @package Contact\History
@@ -19,7 +19,7 @@ use Application\Model\CoreEntityModel;
 
 class History extends CoreEntityModel {
     /**
-     * Contact constructor.
+     * History constructor.
      *
      * @param AdapterInterface $oDbAdapter
      * @since 1.0.0
