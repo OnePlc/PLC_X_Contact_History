@@ -21,4 +21,8 @@ INSERT INTO `permission` (`permission_key`, `module`, `label`, `nav_label`, `nav
 INSERT INTO `core_tag` (`Tag_ID`, `tag_key`, `tag_label`, `created_by`, `created_date`, `modified_by`, `modified_date`) VALUES
 (NULL, 'type', 'Type', '1', '0000-00-00 00:00:00', '1', '0000-00-00 00:00:00');
 
+--
+-- quicksearch fix
+--
+INSERT INTO `settings` (`settings_key`, `settings_value`) VALUES ('quicksearch-contacthistory-customlabel', 'comment');
 
